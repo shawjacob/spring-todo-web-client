@@ -15,18 +15,31 @@ export const getTodos = async () =>{
     }
 };
 
-export const getTodoById = (id: number) =>{
 
+
+export const postTodo = async (todo: Todo) => {
+    try{
+        let response = await axios.post(base_url, todo);
+        console.log("Response", response);
+        console.log("Data", response.data);
+        return response.data;
+    }
+    catch (error) {
+        return error;
+    }
 }
 
-export const postTodo = (todo: Todo) => {
+export const updateTodoById = async (todo: Todo) => {
+    try {
+        let response = await axios.post('$base_url/${todo.id', todo);
+        console.log("Response", response);
+        console.log("Data", response.data);
+        return response.data;
+    } catch (error) {
+        return error;
+    }
+
 
 }
-
-export const updateTodoById = (todo: Todo) => {
-
-}
-
-export const deleteTodoById = (id: number)  => {
-
+export const deleteTodoById = (id: number) => {
 }
