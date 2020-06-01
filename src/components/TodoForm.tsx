@@ -1,6 +1,6 @@
 import React from 'react';
-import { Input, Button, Form } from 'antd';
-
+import {Input, Button, Form, Switch} from 'antd';
+import styles from './styles.module.css'
 const layout = {
     labelCol: {span: 8},
     wrapperCol: {span: 16},
@@ -31,10 +31,10 @@ const TodoForm = () => {
                     <Switch />
                 </Form.Item>
                 <Form.Item {...tailLayout}>
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" className={styles.button}>
                         Submit
                     </Button>
-                    <Button htmlType="button" onClick="reset">
+                    <Button htmlType="button" onClick={onReset}className={styles.button} >
                         Reset
                     </Button>
                 </Form.Item>
