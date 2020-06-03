@@ -1,53 +1,53 @@
-import React from 'react';
-import { Input, Button, Form, Switch } from 'antd';
+import React, {Component} from 'react';
+import Todo from "../services/Todo";
+import {getTodos} from "../services/todoService";
+import TodoItem from "./TodoItem";
+import { Row } from "antd";
+import TodoForm from "./TodoForm";
 import styles from './styles.module.css';
-import {postTodo} from "../services/todoService";
 
-const layout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 8 },
-};
-const tailLayout = {
-    wrapperCol: { offset: 8, span: 8 },
-};
-
-interface TodoFormInterface {
-    reload(): void;
+interface TodoListState {
+    todos: Todo[];
+    loading: boolean;
 }
 
-const TodoForm = (props: TodoFormInterface) => {
-    const [form] = Form.useForm();
+class TodoList extends Component<any, TodoListState> {
+    state = {
+        todos: [],
+        loading: true
+    }
 
-    const onFinish = (values: any) => {
-        console.log(values);
-        postTodo(values).then(() => props.reload());
-    };
+    async componentDidMount() {
+        await this.loadPage();
+    }
 
-    const onReset = () => {
-        form.resetFields();
-    };
+    loadPage = async () => {
+        let todos = await getTodos();
+        this.setState({todos, loading: false});
+    }
 
-    return (
-        <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
-            <Form.Item name="title" label="Title" rules={[{ required: true}]}>
-                <Input />
-            </Form.Item>
-            <Form.Item name="description" label="Description" rules={[{ required: true}]}>
-                <Input.TextArea />
-            </Form.Item>
-            <Form.Item name="complete" label="Complete" valuePropName="checked" initialValue={false}>
-                <Switch />
-            </Form.Item>
-            <Form.Item {...tailLayout}>
-                <Button type="primary" htmlType="submit">
-                    Submit
-                </Button>
-                <Button htmlType="button" onClick={onReset} className={styles.button}>
-                    Reset
-                </Button>
-            </Form.Item>
-        </Form>
-    );
+    render() {
+        // @ts-ignore
+        return (
+            <div className={styles.todoBody}>
+                <h2>This is a todo list</h2>
+                {this.state.loading ? (
+                    <>
+                        <h2>Loading...</h2>
+                    </>
+                ) : (
+                    <>
+                        <TodoForm reload={this.loadPage}/>
+                        <Row className={styles.todoRows}>
+                            {this.state.todos.map((todo: Todo) =>
+                                <TodoItem key={todo.id} todo={todo} />
+                            )}
+                        </Row>
+                    </>
+                )}
+            </div>
+        );
+    }
 }
 
-export default TodoForm;
+export default TodoList;
