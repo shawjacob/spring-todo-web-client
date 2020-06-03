@@ -1,3 +1,4 @@
+
 import React, {Component} from 'react';
 import Todo from "../services/Todo";
 import {getTodos} from "../services/todoService";
@@ -27,7 +28,6 @@ class TodoList extends Component<any, TodoListState> {
     }
 
     render() {
-        // @ts-ignore
         return (
             <div className={styles.todoBody}>
                 <h2>This is a todo list</h2>
@@ -40,7 +40,7 @@ class TodoList extends Component<any, TodoListState> {
                         <TodoForm reload={this.loadPage}/>
                         <Row className={styles.todoRows}>
                             {this.state.todos.map((todo: Todo) =>
-                                <TodoItem key={todo.id} todo={todo} />
+                                <TodoItem key={todo.id} todo={todo} reload={this.loadPage}/>
                             )}
                         </Row>
                     </>
